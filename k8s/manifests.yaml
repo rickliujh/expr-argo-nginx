@@ -14,6 +14,15 @@ spec:
     metadata:
       labels:
         app: nginx
+      annotations:
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/role: 'nginx-role'
+        vault.hashicorp.com/agent-inject-file-htpasswd: '.htpasswd'
+        vault.hashicorp.com/secret-volume-path: '/etc/apache2/'
+        vault.hashicorp.com/agent-inject-template-htpasswd: |
+          {{- with secret "kv/nginx/basic-auth" -}}
+          {{ .Data.data.htpasswd }}
+          {{- end -}}
     spec:
       containers:
       - name: nginx
@@ -30,9 +39,6 @@ spec:
           - name: vo-conf
             mountPath: "/etc/nginx/conf.d"
             readOnly: true
-          - name: vo-basic-auth
-            mountPath: "/etc/apache2"
-            readOnly: true
       volumes:
         - name: vo-conf
           configMap:
@@ -40,12 +46,6 @@ spec:
             items:
               - key: "default.conf"
                 path: "default.conf"
-        - name: vo-basic-auth
-          secret:
-            secretName: nginx-basic-auth
-            items:
-              - key: ".htpasswd"
-                path: ".htpasswd"
 ---
 apiVersion: v1
 kind: Service
