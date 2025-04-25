@@ -18,6 +18,8 @@ Or, apply them once by below command in the project root directory.
 kubectl -n nginx apply -f k8s/configmaps.yaml
 ```
 
+Alternatively, one can inject the secret using Vault for advance security, see branch [vault-inject](https://github.com/rickliujh/expr-argo-nginx/tree/vault-inject)
+
 ## Nginx HTTP basic Authentication
 
 |||
