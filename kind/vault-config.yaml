@@ -1,0 +1,10 @@
+global:
+  enabled: true
+  tlsDisable: true
+  namespace: vault
+ui:
+  enabled: true
+  serviceType: ClusterIP
+server:
+   dataStorage:
+     storageClass: standard
